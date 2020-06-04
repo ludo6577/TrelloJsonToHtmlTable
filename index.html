@@ -77,23 +77,27 @@
 	<body>
 		
 		<div>
+			<!-- Inputs -->
 			Trello board JSON: <input id="jsonInput" type="text" />
 			<input class="button" type="button" onclick="refreshTable(document.getElementById('jsonInput').value)" value="Import JSON" />			
 			<input class="button" type="button" onclick="tableToExcel('table', data.name, 'Trello ' + data.name + '.xls')" value="Export to Excel" />
 			<a id="dlink"  style="display:none;"></a>
 			
+			<!-- Template header -->
+			<table id="template" style="display:none;">
+				<tr>
+					<th><div>Liste</div></th>
+					<th><div>Title</div></th>
+					<th><div>Description</div></th>
+					<th><div>Checklist</div></th>
+					<th><div>Comments</div></th>
+					<th><div>Labels</div></th>
+					<th><div>Attachments</div></th>
+				</tr>
+			</table>
+			
+			<!-- Data table -->
 			<table>
-				<thead>	
-					<tr>
-						<th><div>List</div></th>
-						<th><div>Title</div></th>
-						<th><div>Description</div></th>
-						<th><div>Checklist</div></th>
-						<th><div>Comments</div></th>
-						<th><div>Labels</div></th>
-						<th><div>Attachments</div></th>
-					</tr>
-				</thead>
 				<tbody id="table">
 				</tbody>
 			</table>
@@ -107,8 +111,9 @@
 			function refreshTable(json){			
 				var data = JSON.parse(json);
 				
+				var template = document.getElementById("template");
 				var table = document.getElementById("table");
-				table.innerHTML = "";
+				table.innerHTML = template.innerHTML;
 				
 				var lists = {};
 				for(var i=0; i<data.lists.length; i++){
@@ -212,8 +217,10 @@
 					for(var j=0; j<card.attachments.length; j++){
 						var attachment = card.attachments[j];
 						imgNode = document.createElement("img");
-						imgNode.setAttribute('src', attachment.previews[0].url); // use "attachment.url" to get full sized image
+						imgNode.setAttribute('src', attachment.url); // use "attachment.url" to get full sized image
 						imgNode.setAttribute('onclick', onclick="window.open('" + attachment.url + "')");
+						imgNode.setAttribute('width', "200");
+						imgNode.setAttribute('style', "max-width:200px;max-height:200px;");
 						listNode.appendChild(imgNode);
 					}
 					node = document.createElement("td");
@@ -221,7 +228,6 @@
 					row.appendChild(node);
 				}
 			}
-					
 
 			//https://stackoverflow.com/questions/17126453/html-table-to-excel-javascript
 			var tableToExcel = (function () {
@@ -233,6 +239,13 @@
 					if (!table.nodeType) table = document.getElementById(table)
 					var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
 
+					/*var link = document.createElement("a");
+					link.href = uri + base64(format(template, ctx));
+					link.download = filename;
+					document.body.appendChild(link);
+					link.click();
+					document.body.removeChild(link);*/
+					
 					document.getElementById("dlink").href = uri + base64(format(template, ctx));
 					document.getElementById("dlink").download = filename;
 					document.getElementById("dlink").click();
