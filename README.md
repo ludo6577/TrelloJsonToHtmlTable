@@ -9,7 +9,7 @@ You can see how it feels on: [Github.io](https://ludo6577.github.io/TrelloJsonTo
 
 ## How to use
 
-First port your board from Trello:
+First export your board from Trello:
 
 <img src="img/Trello.ExportToJSON.png" width="70%" alt="Export Trello Board JSON">
 
