@@ -13,7 +13,10 @@ First port your board from Trello:
 
 <img src="img/Trello.ExportToJSON.png" width="70%" alt="Export Trello Board JSON">
 
-Then copy and paste the `JSON` in `TrelloJsonToTable.html`
+Then copy and paste the `JSON` in `TrelloJsonToTable.html`.
+Replace the data in line 80: `var data = <YOUR JSON HERE>`
+
+
 Now open the page, you should see something like this:
 
 <img src="img/Html.Table.png" width="70%" alt="Trello HTML Table">
