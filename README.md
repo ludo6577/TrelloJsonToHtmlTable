@@ -3,6 +3,10 @@
 Convert a Trello board (exported as JSON) to an HTML table.
 An export button then allow to export to Excel (xls)
 
+## Live example
+
+You can see how it feels on: [Github.io](https://ludo6577.github.io/TrelloJsonToHtmlTable/)
+
 ## How to use
 
 First port your board from Trello:
