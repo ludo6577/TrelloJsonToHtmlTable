@@ -1,5 +1,7 @@
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
 		<style>
 			/*
 			 * Button style
@@ -106,10 +108,10 @@
 		<script>
 			/*
 			 * 		Convert a Trello board (exported as JSON) to an HTML table.
-			 * 		An export button then allow to export to Excel (xls)	
+			 * 		An export button then allow to export to Excel (xls)
 			 */
 			function refreshTable(json){			
-				var data = JSON.parse(json);
+				window.data = JSON.parse(json);
 				
 				var template = document.getElementById("template");
 				var table = document.getElementById("table");
@@ -164,68 +166,73 @@
 					row.appendChild(node);
 					
 					//Checklist
-					var listNode = document.createElement("ul");
-					listNode.setAttribute('class', 'cell-list');
+					node = document.createElement("td");
+					row.appendChild(node);
 					if(card.idChecklists.length > 0){
+						var listNode = document.createElement("ul");
+						listNode.setAttribute('class', 'cell-list');
 						var list = checkLists[card.idChecklists[0]];
 						for(var j=0; j<list.checkItems.length; j++){
 							var item = list.checkItems[j];
-							node = document.createElement("li");
+							var li = document.createElement("li");
 							textNode = document.createTextNode(item.name);
-							node.appendChild(textNode);  
-							listNode.appendChild(node);
+							li.appendChild(textNode);  
+							listNode.appendChild(li);
 						}
+						node.appendChild(listNode);  
 					}
-					node = document.createElement("td");
-					node.appendChild(listNode);  
-					row.appendChild(node);
 					
 					//Comments
-					var listNode = document.createElement("ul");
-					listNode.setAttribute('class', 'cell-list');
-					if(comments[card.id]){
+					node = document.createElement("td");
+					row.appendChild(node);
+					if(comments[card.id] && comments[card.id].length>0){
+						var listNode = document.createElement("ul");
+						listNode.setAttribute('class', 'cell-list');
 						var commentsCard = comments[card.id];
 						for(var j=0; j<commentsCard.length; j++){
 							var comment = commentsCard[j];
-							node = document.createElement("li");
+							var item = document.createElement("li");
 							textNode = document.createTextNode(comment);
-							node.appendChild(textNode);  
-							listNode.appendChild(node);
+							item.appendChild(textNode);  
+							listNode.appendChild(item);
 						}
+						node.appendChild(listNode);  
 					}
-					node = document.createElement("td");
-					node.appendChild(listNode);  
-					row.appendChild(node);
-									
+					
 					//Labels
-					listNode = document.createElement("ul");
-					listNode.setAttribute('class', 'cell-list');
-					for(var j=0; j<card.labels.length; j++){
-						var label = card.labels[j];
-						node = document.createElement("li");
-						textNode = document.createTextNode(label.name);
-						node.setAttribute('style', 'color:' + label.color);
-						node.appendChild(textNode);  
-						listNode.appendChild(node);
-					}
 					node = document.createElement("td");
-					node.appendChild(listNode);  
 					row.appendChild(node);
+					if(card.labels.length>0){
+						listNode = document.createElement("ul");
+						listNode.setAttribute('class', 'cell-list');
+						for(var j=0; j<card.labels.length; j++){
+							var label = card.labels[j];
+							var item = document.createElement("li");
+							textNode = document.createTextNode(label.name);
+							item.setAttribute('style', 'color:' + label.color);
+							item.appendChild(textNode);  
+							listNode.appendChild(item);
+						}					
+						node.appendChild(listNode);  
+					}
+					
 									
 					//Attachments
-					listNode = document.createElement("div");
-					for(var j=0; j<card.attachments.length; j++){
-						var attachment = card.attachments[j];
-						imgNode = document.createElement("img");
-						imgNode.setAttribute('src', attachment.url); // use "attachment.url" to get full sized image
-						imgNode.setAttribute('onclick', onclick="window.open('" + attachment.url + "')");
-						imgNode.setAttribute('width', "200");
-						imgNode.setAttribute('style', "max-width:200px;max-height:200px;");
-						listNode.appendChild(imgNode);
-					}
 					node = document.createElement("td");
-					node.appendChild(listNode);  
 					row.appendChild(node);
+					if(card.attachments.length>0){					
+						listNode = document.createElement("div");
+						for(var j=0; j<card.attachments.length; j++){
+							var attachment = card.attachments[j];
+							imgNode = document.createElement("img");
+							imgNode.setAttribute('src', attachment.url); // use "attachment.url" to get full sized image
+							imgNode.setAttribute('onclick', onclick="window.open('" + attachment.url + "')");
+							imgNode.setAttribute('width', "200");
+							imgNode.setAttribute('style', "max-width:200px;max-height:200px;");
+							listNode.appendChild(imgNode);
+						}
+						node.appendChild(listNode);  
+					}
 				}
 			}
 
@@ -239,13 +246,6 @@
 					if (!table.nodeType) table = document.getElementById(table)
 					var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
 
-					/*var link = document.createElement("a");
-					link.href = uri + base64(format(template, ctx));
-					link.download = filename;
-					document.body.appendChild(link);
-					link.click();
-					document.body.removeChild(link);*/
-					
 					document.getElementById("dlink").href = uri + base64(format(template, ctx));
 					document.getElementById("dlink").download = filename;
 					document.getElementById("dlink").click();
