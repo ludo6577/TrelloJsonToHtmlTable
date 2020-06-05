@@ -17,6 +17,10 @@ You can see how it look or use it directly here: [Github.io](https://ludo6577.gi
 
 <img src="img/Html.Table.png" width="80%" alt="Trello HTML Table">
 
+## Known issues
+
+Sometimes special chars corrupt the document. The Excel export should use an existing librarie
+
 ---
 
 Feel free to contribute (design, columns, interactions, ...)
