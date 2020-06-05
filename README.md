@@ -1,7 +1,7 @@
 # TrelloJsonToHtmlTable
 
 Convert a **Trello Board** to **EXCEL (xls)** or **HTML Page**. All in one Javascript page without plugin or server interaction! Free, Fast and Easy to use, you can now make reporting or backup from your Trello Boards to Excel or a simple HTML page in only a few clicks.
-Keep you data safe, everything is executed on your browser.
+Keep your data safe, everything is executed on your browser.
 
 ## Live example
 
